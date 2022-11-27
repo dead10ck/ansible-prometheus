@@ -7,7 +7,8 @@ prometheus_config_dir: /etc/prometheus
 prometheus_db_dir: /var/lib/prometheus
 prometheus_read_only_dirs: []
 
-prometheus_web_listen_address: "0.0.0.0:9090"
+prometheus_port: '9090'
+prometheus_web_listen_address: "0.0.0.0:{{ prometheus_port }}"
 prometheus_web_external_url: ''
 # See https://github.com/prometheus/exporter-toolkit/blob/master/docs/web-configuration.md
 prometheus_web_config:
@@ -74,7 +75,7 @@ prometheus_scrape_configs:
     metrics_path: "{{ prometheus_metrics_path }}"
     static_configs:
       - targets:
-          - "{{ ansible_fqdn | default(ansible_host) | default('localhost') }}:9090"
+          - "{{ ansible_fqdn | default(ansible_host) | default('localhost') }}:{{ prometheus_port }}"
   - job_name: "node"
     file_sd_configs:
       - files:
